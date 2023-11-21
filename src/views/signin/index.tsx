@@ -3,8 +3,8 @@ import Link from "next/link";
 import React from "react";
 
 const Signin = () => (
-  <main className="mx-auto container relative min-h-screen items-center grid grid-cols-2 gap-16 py-20">
-    <div>
+  <main className="mx-auto container relative min-h-screen items-center grid grid-cols-1 md:grid-cols-2 gap-16 py-20 px-4 md:px-0">
+    <div className="hidden md:block">
       <Image
         src="/assets/person-arranging.png"
         alt="person-arranging"
