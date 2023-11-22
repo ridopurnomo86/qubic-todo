@@ -1,31 +1,30 @@
-import Image from "next/image";
-import Link from "next/link";
-import React from "react";
+"use client";
 
-const Signin = () => (
-  <main className="mx-auto container relative min-h-screen items-center grid grid-cols-1 md:grid-cols-2 gap-16 py-20 px-4 md:px-0">
-    <div className="hidden md:block">
-      <Image
-        src="/assets/person-arranging.png"
-        alt="person-arranging"
-        width="0"
-        height="0"
-        sizes="90vw"
-        className="w-full h-auto rounded"
-      />
-    </div>
+import { signinAccount } from "@/app/auth/actions";
+import { useFormState, useFormStatus } from "react-dom";
+
+const initialState = {
+  message: null,
+};
+
+const Signin = () => {
+  const { pending } = useFormStatus();
+  const [state, formAction] = useFormState(signinAccount as any, initialState);
+
+  return (
     <div>
-      <h1 className="font-bold mb-4 text-4xl text-neutral-900">Welcome!</h1>
-      <p className="font-medium mb-4 text-md text-neutral-700">
-        <Link
-          href="/signup"
-          className="underline font-medium mb-4 text-md text-neutral-900"
-        >
-          Create a free account
-        </Link>
-        &nbsp;or log in to get started using Todo List
+      {state?.message && (
+        <span className="rounded-lg bg-red-400 w-full block py-3 mb-4 text-center text-md font-medium antialiased text-black">
+          {state?.message}
+        </span>
+      )}
+      <h1 className="text-neutral-900 font-bold text-2xl antialiased mb-1">
+        Welcome Back &#127881;
+      </h1>
+      <p className="text-neutral-600 text-sm font-medium antialiased mb-4">
+        Enter your email below to login your account
       </p>
-      <form className="w-full">
+      <form action={formAction} className="w-full">
         <div className="mb-6">
           <label
             htmlFor="email"
@@ -66,6 +65,8 @@ const Signin = () => (
           Forgot Password?
         </a>
         <button
+          aria-disabled={pending}
+          disabled={pending}
           type="submit"
           className="block min-w-full text-white bg-black hover:opacity-80 transition-all focus:ring-4 focus:outline-none focus:ring-neutral-300 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center"
         >
@@ -73,7 +74,7 @@ const Signin = () => (
         </button>
       </form>
     </div>
-  </main>
-);
+  );
+};
 
 export default Signin;

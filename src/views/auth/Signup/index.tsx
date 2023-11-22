@@ -1,28 +1,32 @@
-import Image from "next/image";
+"use client";
+
 import Link from "next/link";
 import React from "react";
+import { useFormState, useFormStatus } from "react-dom";
+import { createAccount } from "@/app/auth/actions";
 
-const Signup = () => (
-  <main className="mx-auto container relative min-h-screen items-center grid grid-cols-1 md:grid-cols-2 gap-16 py-20 px-4 md:px-0">
-    <div className="hidden md:block">
-      <Image
-        src="/assets/person-arranging.png"
-        alt="person-arranging"
-        width="0"
-        height="0"
-        sizes="90vw"
-        className="w-full h-auto rounded"
-      />
-    </div>
+const initialState = {
+  message: null,
+};
+
+const Signup = () => {
+  const { pending } = useFormStatus();
+  const [state, formAction] = useFormState(createAccount as any, initialState);
+
+  return (
     <div>
-      <h1 className="font-bold mb-4 text-4xl text-neutral-900">Signup</h1>
-      <p className="font-medium mb-4 text-md text-neutral-700">
-        Already have an account ?&nbsp;
-        <Link href="/signin">
-          <span className="text-cyan-600">Sign in</span>
-        </Link>
+      {state?.message && (
+        <div className="rounded-lg bg-red-400 w-full block py-3 mb-4 text-center text-md font-medium antialiased text-black">
+          {state?.message}
+        </div>
+      )}
+      <h1 className="text-neutral-900 font-bold text-2xl antialiased mb-1">
+        Create your account.
+      </h1>
+      <p className="text-neutral-600 text-sm font-medium antialiased mb-4">
+        Welcome to Todo. Lets create your account
       </p>
-      <form className="w-full">
+      <form action={formAction} className="w-full">
         <div className="mb-6">
           <label
             htmlFor="username"
@@ -88,27 +92,29 @@ const Signup = () => (
             required
           />
         </div>
+        <p className="mt-4 text-sm text-neutral-600 font-medium antialiased mb-4">
+          By clicking &quot;Signup&quot;, you acknowledge that you have read and
+          accept the&nbsp;
+          <Link href="#">
+            <span className="text-cyan-600">Terms of Service</span>
+          </Link>
+          &nbsp; and&nbsp;
+          <Link href="#">
+            <span className="text-cyan-600">Privacy Policy</span>
+          </Link>
+          .
+        </p>
         <button
+          aria-disabled={pending}
+          disabled={pending}
           type="submit"
           className="block min-w-full text-white bg-black hover:opacity-80 transition-all focus:ring-4 focus:outline-none focus:ring-neutral-300 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center"
         >
           Sign Up
         </button>
       </form>
-      <p className="mt-4 text-sm text-neutral-600 font-medium antialiased">
-        By clicking &quot;Signup&quot;, you acknowledge that you have read and
-        accept the&nbsp;
-        <Link href="#">
-          <span className="text-cyan-600">Terms of Service</span>
-        </Link>
-        &nbsp; and&nbsp;
-        <Link href="#">
-          <span className="text-cyan-600">Privacy Policy</span>
-        </Link>
-        .
-      </p>
     </div>
-  </main>
-);
+  );
+};
 
 export default Signup;
