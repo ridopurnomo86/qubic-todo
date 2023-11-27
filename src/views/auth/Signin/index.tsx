@@ -1,5 +1,6 @@
 "use client";
 
+import { redirect } from "next/navigation";
 import { signinAccount } from "@/app/auth/actions";
 import { useFormState, useFormStatus } from "react-dom";
 
@@ -10,6 +11,8 @@ const initialState = {
 const Signin = () => {
   const { pending } = useFormStatus();
   const [state, formAction] = useFormState(signinAccount as any, initialState);
+
+  if (state.message === "ok") return redirect("/dashboard");
 
   return (
     <div>

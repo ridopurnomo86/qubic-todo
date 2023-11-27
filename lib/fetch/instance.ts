@@ -32,4 +32,17 @@ instance.interceptors.request.use(async (config) => {
   return config;
 });
 
+// // Response interceptor
+// instance.interceptors.response.use(
+//   (response) => {
+//     // Modify the response data here
+
+//     return response;
+//   },
+//   (error) => {
+//     // Handle response errors here
+//     return Promise.reject(error.response.data);
+//   }
+// );
+
 export default instance;
